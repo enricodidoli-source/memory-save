@@ -3,3 +3,7 @@ temp_var/
 
 __pycache__/
 *.pyc
+
+memory_utils_old1.py
+
+.ipynb_checkpoints/
