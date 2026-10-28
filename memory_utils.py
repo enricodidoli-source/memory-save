@@ -37,6 +37,8 @@ class MemorySave:
 
                 if self._is_df_list(var): # if the variable is a list of dataframe
                     var_sub_dir = os.path.join(save_dir, var_name)
+                    if os.path.exists(var_sub_dir):
+                        shutil.rmtree(var_sub_dir)
                     os.makedirs(var_sub_dir, exist_ok=True)
                     
                     for i, df in enumerate(var):
