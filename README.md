@@ -1,4 +1,4 @@
-# SeedManager: Reproducible Randomness & State Management in Python
+# MemorySave: RAM Management in Python
 
 MemorySave is a Python utility class created to handle RAM management efficiently by combining optimized disk serialization with cache cleaning.
 It stores variables into a temporary folder, removes them from RAM storage and load them when needed.
