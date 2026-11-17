@@ -7,6 +7,15 @@ import matplotlib.pyplot as plt
 from IPython import get_ipython
 import shutil
 import pandas as pd
+import os
+import pickle
+import gc
+import sys
+import ctypes
+import matplotlib.pyplot as plt
+from IPython import get_ipython
+import shutil
+import pandas as pd
 
 class MemorySave:
     def __init__(self, base_dir: str):
@@ -40,11 +49,11 @@ class MemorySave:
                     if os.path.exists(var_sub_dir):
                         shutil.rmtree(var_sub_dir)
                     os.makedirs(var_sub_dir, exist_ok=True)
-                    
+
                     for i, df in enumerate(var):
                         part_path = os.path.join(var_sub_dir, f"df_{i}.parquet")
                         df.to_parquet(part_path, index=False)
-                        
+
                     self.variable_dict[var_name] = var_sub_dir
                     self.saved_parquet.append(var_name)
 
@@ -70,18 +79,17 @@ class MemorySave:
                 raise ValueError(f'Variable {var_name} not found in memory')
 
             base_path = self.variable_dict[var_name]
-            
+
             print('base_path', base_path)
 
             if var_name in self.saved_parquet:
-                files = sorted([f for f in os.listdir(base_path) if f.startswith("df_") and f.endswith(".parquet")])
-                print(files)
-                df_list = []
-                for file_name in files:
-                    df_path = os.path.join(base_path, file_name)
-                    df_list.append(pd.read_parquet(df_path))
+                n_files = len([f for f in os.listdir(base_path)
+                              if f.startswith("df_") and f.endswith(".parquet")])
+
+                df_list = [pd.read_parquet(os.path.join(base_path, f"df_{i}.parquet"))
+                          for i in range(n_files)]
                 variables.append(df_list)
-            
+
             else:
                 file_path = os.path.join(base_path, f"{var_name}.pkl")
 
